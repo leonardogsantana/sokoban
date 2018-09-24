@@ -17,6 +17,8 @@ export class AppComponent {
 
   points: boolean[][];
 
+  boxes: number[][];
+
   levelState: number[] = new Array();
 
   player: number;
@@ -30,9 +32,11 @@ export class AppComponent {
       const matrix: number[][] = res.json().levels;
       this.level = [];
       this.points = [];
+      this.boxes = [];
       for (let x = 0; x < matrix.length; x++) {
         this.level[x] = [];
         this.points[x] = [];
+        this.boxes[x] = [];
         for (let y = 0; y < matrix[0].length; y++) {
           const index = x * matrix[0].length + y;
           this.level[x][y] = new Tile(index, matrix[x][y]);
@@ -43,7 +47,14 @@ export class AppComponent {
           } else if (this.level[x][y].sprite == TileType.Point) {
             this.points[x][y] = true;
           }
+          else if (this.level[x][y].sprite == TileType.Box) {
+            this.boxes[x][y] = 1;
+          }
+          else if (this.level[x][y].sprite == TileType.BoxReady) {
+            this.boxes[x][y] = 2;
+          }
           else {
+            this.boxes[x][y] = 0;
             this.points[x][y] = false;
           }
         }
@@ -57,6 +68,13 @@ export class AppComponent {
       const x = this.level.indexOf(tileY);
       const y = tileY.indexOf(tileX);
       this.makeAction = true;
+      for (let i = 0; i < this.level.length; i++) {
+        for (let j = 0; j < this.level[0].length; j++) {
+          if (this.level[i][j].sprite == TileType.Box && this.level[i][j].sprite == TileType.BoxReady) {
+            this.boxes[i][j] = this.level[i][j].sprite == TileType.Box ? 1 : 2;
+          }
+        }
+      }
       this.UpdatePlayer(x, y);
       this.validateEnter = 0;
     }
@@ -86,13 +104,20 @@ export class AppComponent {
     const y = tileY.indexOf(tileX);
     if (!this.makeAction) {
       this.level[x][y].sprite = this.levelState[tileX.index];
+      for (let i = 0; i < this.level.length; i++) {
+        for (let j = 0; j < this.level[0].length; j++) {
+          if (this.boxes[i][j] == 1 && this.boxes[i][j] == 2) {
+            this.level[i][j].sprite = this.boxes[i][j] == 1 ? TileType.Box : TileType.BoxReady;
+          }
+        }
+      }
       this.PreviewPlayerExit(x, y);
     }
     else {
       this.makeAction = false;
     }
   }
-  PreviewPlayerEnter(x: number, y: number, arrow: number) {    
+  PreviewPlayerEnter(x: number, y: number, arrow: number) {
     const index = this.level[x][y].index;
     switch (this.levelState[this.level[x][y].index]) {
       case TileType.Ground:
@@ -100,44 +125,51 @@ export class AppComponent {
         this.validateEnter = arrow;
         break;
       case TileType.Box:
+        this.level[x][y].sprite = arrow + 11;
+        this.validateEnter = arrow;
         switch (arrow) {
-          case 1:
-            if (this.level[x][y+1].sprite == TileType.Ground ||
-              this.level[x][y+1].sprite == TileType.Point) {
+          case 1://RIGHT
+            if (this.level[x][y + 1].sprite == TileType.Ground || this.level[x][y + 1].sprite == TileType.Point) {
               this.level[x][y].sprite = arrow + 11;
-              this.levelState[index] = this.level[x][y+1].sprite = TileType.Box;
-              this.validateEnter = arrow;
+              if (this.level[x][y + 1].sprite != TileType.Wall) {
+                this.levelState[index] = this.level[x][y + 1].sprite = TileType.Box;
+                this.validateEnter = arrow;
+              }
             }
             break;
-            if (this.level[x][y-1].sprite == TileType.Ground ||
-              this.level[x][y-1].sprite == TileType.Point) {
+          case 2://LEFT
+            if (this.level[x][y - 1].sprite == TileType.Ground || this.level[x][y - 1].sprite == TileType.Point) {
               this.level[x][y].sprite = arrow + 11;
-              this.levelState[index] = this.level[x][y-1].sprite = TileType.Box;
-              this.validateEnter = arrow;
-            }
-          case 2:
-            if (this.level[x-1][y].sprite == TileType.Ground ||
-              this.level[x-1][y].sprite == TileType.Point) {
-              this.level[x][y].sprite = arrow + 11;
-              this.levelState[index] = this.level[x-1][y].sprite = TileType.Box;
-              this.validateEnter = arrow;
+              if (this.level[x][y - 1].sprite != TileType.Wall) {
+                this.levelState[index] = this.level[x][y - 1].sprite = TileType.Box;
+                this.validateEnter = arrow;
+              }
             }
             break;
-          case 3:
-            if (this.level[x+1][y].sprite == TileType.Ground ||
-              this.level[x+1][y].sprite == TileType.Point) {
-              this.level[x][y].sprite = arrow + 11;
-              this.levelState[index] = this.level[x+1][y].sprite = TileType.Box;
-              this.validateEnter = arrow;
+          case 3://UP
+            if (this.level[x + 1][y].sprite == TileType.Ground || this.level[x + 1][y].sprite == TileType.Point) {
+              this.level[x][y].sprite = arrow + 11; 
+              if (this.level[x + 1][y].sprite != TileType.Wall) {
+                this.levelState[index] = this.level[x + 1][y].sprite = TileType.Box;
+                this.validateEnter = arrow;
+              }
             }
             break;
-          case 4:
+          case 4://DOWN
+            if (this.level[x - 1][y].sprite == TileType.Ground || this.level[x - 1][y].sprite == TileType.Point) {
+              this.level[x][y].sprite = arrow + 11;
+              if (this.level[x - 1][y].sprite != TileType.Wall) {
+                this.levelState[index] = this.level[x - 1][y].sprite = TileType.Box;
+                this.validateEnter = arrow;
+              }
+            }
             break;
         }
         break;
       case TileType.BoxReady:
         this.level[x][y].sprite = arrow + 11;
         this.validateEnter = arrow;
+
         break;
       case TileType.Point:
         this.level[x][y].sprite = arrow + 7;
@@ -154,7 +186,7 @@ export class AppComponent {
         //this.level[i][j].sprite = this.levelState[this.level[i][j].index];
         if (this.level[i][j].sprite == TileType.PlayerDisable) {
           this.level[i][j].sprite = TileType.Player;
-        }        
+        }
       }
     }
   }
