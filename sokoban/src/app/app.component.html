@@ -1,0 +1,19 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<div tyle="text-align:center;">
+  <table id="table">
+    <th>
+      Sokoban
+    </th>
+    <tbody>
+      <tr *ngFor="let y of level">
+        <td *ngFor="let x of y">
+          <img (click)="Action(x, y)" (mouseenter)="Enter(x,y)" (mouseleave)="Exit(x,y)" src="{{tiles}}{{x.sprite}}.png"
+            height="48" width="48">
+        </td>
+      </tr>
+    </tbody>
+    <th>
+      Leonardo Santana © 2018
+    </th>
+  </table>
+</div>

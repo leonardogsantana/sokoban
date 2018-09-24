@@ -1,0 +1,1 @@
+set PATH=%PATH%;C:\Users\leonardosantana\AppData\Roaming\npm;C:\Users\leonardosantana\AppData\Roaming\npm\node_modules

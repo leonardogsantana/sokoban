@@ -1,0 +1,94 @@
+{
+"levels": [
+		 [
+		 {"index":0, "sprite":0},
+		 {"index":1, "sprite":0},
+		 {"index":2, "sprite":1},
+		 {"index":3, "sprite":1},
+		 {"index":4, "sprite":1},
+		 {"index":5, "sprite":1},
+		 {"index":6, "sprite":1},
+		 {"index":7, "sprite":0}
+		 ],		 
+         [
+		 {"index":8, "sprite":1},
+		 {"index":9, "sprite":1},
+		 {"index":10, "sprite":1},
+		 {"index":11, "sprite":2},
+		 {"index":12, "sprite":2},
+		 {"index":13, "sprite":2},
+		 {"index":14, "sprite":1},
+		 {"index":15, "sprite":0}
+		 ],		 
+         [
+		 {"index":16, "sprite":1},
+		 {"index":17, "sprite":3},
+		 {"index":18, "sprite":6},
+		 {"index":19, "sprite":4},
+		 {"index":20, "sprite":2},
+		 {"index":21, "sprite":2},
+		 {"index":22, "sprite":1},
+		 {"index":23, "sprite":0}
+		 ],		 
+         [
+		 {"index":24, "sprite":1},
+		 {"index":25, "sprite":1},
+		 {"index":26, "sprite":1},
+		 {"index":27, "sprite":2},
+		 {"index":28, "sprite":4},
+		 {"index":29, "sprite":3},
+		 {"index":30, "sprite":1},
+		 {"index":31, "sprite":0}
+		 ],		 
+         [
+		 {"index":32, "sprite":1},
+		 {"index":33, "sprite":3},
+		 {"index":34, "sprite":1},
+		 {"index":35, "sprite":1},
+		 {"index":36, "sprite":4},
+		 {"index":37, "sprite":2},
+		 {"index":38, "sprite":1},
+		 {"index":39, "sprite":0}
+		 ],
+		 [
+		 {"index":40, "sprite":1},
+		 {"index":41, "sprite":2},
+		 {"index":42, "sprite":1},
+		 {"index":43, "sprite":2},
+		 {"index":44, "sprite":3}, 
+		 {"index":45, "sprite":2}, 
+		 {"index":46, "sprite":1},
+		 {"index":47, "sprite":1}
+		 ],
+		 [
+		 {"index":48, "sprite":1},
+		 {"index":49, "sprite":4},
+		 {"index":50, "sprite":2}, 
+		 {"index":51, "sprite":5},
+		 {"index":52, "sprite":4},
+		 {"index":53, "sprite":4}, 
+		 {"index":54, "sprite":3},
+		 {"index":55, "sprite":1}
+		 ],
+		 [
+		 {"index":56, "sprite":1}, 
+		 {"index":57, "sprite":2}, 
+		 {"index":58, "sprite":2}, 
+		 {"index":59, "sprite":2},
+		 {"index":60, "sprite":3}, 
+		 {"index":61, "sprite":2}, 
+		 {"index":62, "sprite":2},
+		 {"index":63, "sprite":1}
+		 ],
+		 [
+		 {"index":64, "sprite":1}, 
+		 {"index":65, "sprite":1}, 
+		 {"index":66, "sprite":1}, 
+		 {"index":67, "sprite":1},
+		 {"index":68, "sprite":1}, 
+		 {"index":69, "sprite":1}, 
+		 {"index":70, "sprite":1},
+		 {"index":71, "sprite":1}
+		 ]	 
+		]
+ }
