@@ -17,11 +17,13 @@ export class AppComponent {
 
   points: boolean[][];
 
-  boxes: number[][];
+  //boxes: number[][];
 
   levelState: number[] = new Array();
 
   player: number;
+
+  playerPosition: number[];
 
   makeAction: boolean = false;
 
@@ -32,34 +34,37 @@ export class AppComponent {
       const matrix: number[][] = res.json().levels;
       this.level = [];
       this.points = [];
-      this.boxes = [];
+      //this.boxes = [];
+      this.playerPosition = [];
       for (let x = 0; x < matrix.length; x++) {
         this.level[x] = [];
         this.points[x] = [];
-        this.boxes[x] = [];
+        //this.boxes[x] = [];
         for (let y = 0; y < matrix[0].length; y++) {
           const index = x * matrix[0].length + y;
           this.level[x][y] = new Tile(index, matrix[x][y]);
           this.levelState[index] = matrix[x][y];
           if (this.level[x][y].sprite == TileType.Player) {
             this.player = this.level[x][y].index;
+            this.playerPosition[0] = x;
+            this.playerPosition[1] = y;
             this.points[x][y] = false;
           } else if (this.level[x][y].sprite == TileType.Point) {
             this.points[x][y] = true;
           }
-          else if (this.level[x][y].sprite == TileType.Box) {
+          /* else if (this.level[x][y].sprite == TileType.Box) {
             this.boxes[x][y] = 1;
           }
           else if (this.level[x][y].sprite == TileType.BoxReady) {
             this.boxes[x][y] = 2;
-          }
+          } */
           else {
-            this.boxes[x][y] = 0;
+            //this.boxes[x][y] = 0;
             this.points[x][y] = false;
           }
         }
       }
-      console.log(this.points);
+      //console.log(this.points);
     })
   }
 
@@ -68,13 +73,6 @@ export class AppComponent {
       const x = this.level.indexOf(tileY);
       const y = tileY.indexOf(tileX);
       this.makeAction = true;
-      for (let i = 0; i < this.level.length; i++) {
-        for (let j = 0; j < this.level[0].length; j++) {
-          if (this.level[i][j].sprite == TileType.Box && this.level[i][j].sprite == TileType.BoxReady) {
-            this.boxes[i][j] = this.level[i][j].sprite == TileType.Box ? 1 : 2;
-          }
-        }
-      }
       this.UpdatePlayer(x, y);
       this.validateEnter = 0;
     }
@@ -104,13 +102,13 @@ export class AppComponent {
     const y = tileY.indexOf(tileX);
     if (!this.makeAction) {
       this.level[x][y].sprite = this.levelState[tileX.index];
-      for (let i = 0; i < this.level.length; i++) {
+      /* for (let i = 0; i < this.level.length; i++) {
         for (let j = 0; j < this.level[0].length; j++) {
           if (this.boxes[i][j] == 1 && this.boxes[i][j] == 2) {
             this.level[i][j].sprite = this.boxes[i][j] == 1 ? TileType.Box : TileType.BoxReady;
           }
         }
-      }
+      } */
       this.PreviewPlayerExit(x, y);
     }
     else {
@@ -125,41 +123,47 @@ export class AppComponent {
         this.validateEnter = arrow;
         break;
       case TileType.Box:
-        this.level[x][y].sprite = arrow + 11;
-        this.validateEnter = arrow;
         switch (arrow) {
           case 1://RIGHT
             if (this.level[x][y + 1].sprite == TileType.Ground || this.level[x][y + 1].sprite == TileType.Point) {
-              this.level[x][y].sprite = arrow + 11;
               if (this.level[x][y + 1].sprite != TileType.Wall) {
-                this.levelState[index] = this.level[x][y + 1].sprite = TileType.Box;
+                this.level[x][y].sprite = arrow + 11;
+                //this.boxes[x][y] = 0;
+                this.level[x][y + 1].sprite = TileType.Box;
+                //this.boxes[x][y + 1] = 1;
                 this.validateEnter = arrow;
               }
             }
             break;
           case 2://LEFT
             if (this.level[x][y - 1].sprite == TileType.Ground || this.level[x][y - 1].sprite == TileType.Point) {
-              this.level[x][y].sprite = arrow + 11;
               if (this.level[x][y - 1].sprite != TileType.Wall) {
-                this.levelState[index] = this.level[x][y - 1].sprite = TileType.Box;
+                this.level[x][y].sprite = arrow + 11;
+                //this.boxes[x][y] = 0;
+                this.level[x][y - 1].sprite = TileType.Box;                
+                //this.boxes[x][y - 1] = 1;
                 this.validateEnter = arrow;
               }
             }
             break;
           case 3://UP
             if (this.level[x + 1][y].sprite == TileType.Ground || this.level[x + 1][y].sprite == TileType.Point) {
-              this.level[x][y].sprite = arrow + 11; 
               if (this.level[x + 1][y].sprite != TileType.Wall) {
-                this.levelState[index] = this.level[x + 1][y].sprite = TileType.Box;
+                this.level[x][y].sprite = arrow + 11;
+                //this.boxes[x][y] = 0;
+                this.level[x + 1][y].sprite = TileType.Box;
+                //this.boxes[x + 1][y] = 1;
                 this.validateEnter = arrow;
               }
             }
             break;
           case 4://DOWN
             if (this.level[x - 1][y].sprite == TileType.Ground || this.level[x - 1][y].sprite == TileType.Point) {
-              this.level[x][y].sprite = arrow + 11;
               if (this.level[x - 1][y].sprite != TileType.Wall) {
-                this.levelState[index] = this.level[x - 1][y].sprite = TileType.Box;
+                this.level[x][y].sprite = arrow + 11;
+                //this.boxes[x][y] = 0;
+                this.level[x - 1][y].sprite = TileType.Box;
+                //this.boxes[x - 1][y] = 1;
                 this.validateEnter = arrow;
               }
             }
@@ -176,7 +180,7 @@ export class AppComponent {
         this.validateEnter = arrow;
         break;
     }
-    console.log(this.validateEnter.toString() + arrow);
+    //console.log(this.validateEnter.toString() + arrow);
   }
 
   PreviewPlayerExit(x: number, y: number) {
@@ -186,21 +190,36 @@ export class AppComponent {
         //this.level[i][j].sprite = this.levelState[this.level[i][j].index];
         if (this.level[i][j].sprite == TileType.PlayerDisable) {
           this.level[i][j].sprite = TileType.Player;
+          this.player = this.level[i][j].index;
+          this.playerPosition[0] = i;
+          this.playerPosition[1] = j;
         }
       }
+    }
+    for (let index = -2; index < 3; index++) {
+      const horizontal = this.level[x + index][y];
+      const vertical = this.level[x][y + index];
+      horizontal.sprite = this.levelState[horizontal.index];
+      vertical.sprite = this.levelState[vertical.index];
     }
   }
 
   UpdatePlayer(x: number, y: number) {
     for (let i = 0; i < this.level.length; i++) {
       for (let j = 0; j < this.level[0].length; j++) {
+        //this.level[i][j].sprite = this.levelState[this.level[i][j].index]; 
         if (this.level[i][j].sprite == TileType.Player ||
           this.level[i][j].sprite == TileType.PlayerDisable) {
           this.level[i][j].sprite = (this.points[i][j] ? TileType.Point : TileType.Ground);
         }
+        // if (this.level[i][j].sprite == TileType.Box && this.level[i][j].sprite == TileType.BoxReady) {
+        //   this.boxes[i][j] = this.level[i][j].sprite == TileType.Box ? 1 : 2;
+        // }
       }
     }
     this.player = this.level[x][y].index;
+    this.playerPosition[0] = x;
+    this.playerPosition[1] = y;
     this.level[x][y].sprite = TileType.Player;
   }
 }
