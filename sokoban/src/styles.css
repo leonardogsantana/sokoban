@@ -1,1 +1,17 @@
 /* You can add global styles to this file, and also import other style files */
+.customButton
+{
+    position: relative;
+    width: 384px;
+    padding: 10px 6px; 
+    text-align: center;
+    background-color: rgb(0, 0, 0);
+    border-color:#000000;
+    color:rgb(255, 255, 255);  
+}
+.customButton:hover
+{
+    background-color:rgb(26, 0, 121);
+    border-color: rgb(128, 215, 255);   
+    color:  rgb(255, 255, 255); 
+}
